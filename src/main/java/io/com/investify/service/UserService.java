@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import io.com.investify.dto.CreateUserDto;
+import io.com.investify.dto.UpdateUserDto;
 import io.com.investify.entity.UserEntity;
 import io.com.investify.repository.UserRepository;
 
@@ -43,6 +44,27 @@ public class UserService {
 		return userRepository.findAll();
 	}
 	
+	public void updateUserId(String userId, UpdateUserDto updateUserDto) {
+		var id = UUID.fromString(userId);
+		
+		var userOptional = userRepository.findById(id);
+		
+		if(userOptional.isPresent()) {
+			var user = userOptional.get();
+			
+			if(updateUserDto.username() != null) {
+				user.setUsername(updateUserDto.username());
+			}
+			
+			if(updateUserDto.password() != null) {
+				user.setPassword(updateUserDto.password());
+			}
+			
+			userRepository.save(user);
+		}
+	
+	}
+	
 	public void deleteById(String userId) {
 		
 		var id = UUID.fromString(userId);
@@ -54,5 +76,6 @@ public class UserService {
 		}
 		
 	}
+	
 	
 }
