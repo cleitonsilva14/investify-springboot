@@ -1,5 +1,7 @@
 package io.com.investify.controller;
 
+import java.net.URI;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,7 +16,7 @@ import io.com.investify.entity.UserEntity;
 import io.com.investify.service.UserService;
 
 @RestController
-@RequestMapping("/v1/users/")
+@RequestMapping("/v1/users")
 public class UserController {
 	
 	@Autowired
@@ -22,12 +24,17 @@ public class UserController {
 
 	@PostMapping
 	public ResponseEntity<UserEntity> createUser(@RequestBody CreateUserDto createUserDto){
-		return null;
+		var userId = userService.createUser(createUserDto);
+		return ResponseEntity.created(URI.create("/v1/users/" + userId.toString())).build();
 	}
 	
 	@GetMapping("/{userId}")
 	public ResponseEntity<UserEntity> getUserById(@PathVariable String userId){
-		return null;
+		var user = userService.getUserById(userId);
+		if(user.isEmpty()) {
+			return ResponseEntity.notFound().build();
+		}
+		return ResponseEntity.ok(user.get());
 	}
 	
 	
