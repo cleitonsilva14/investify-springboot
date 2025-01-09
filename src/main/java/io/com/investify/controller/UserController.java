@@ -1,6 +1,7 @@
 package io.com.investify.controller;
 
 import java.net.URI;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -30,11 +31,20 @@ public class UserController {
 	
 	@GetMapping("/{userId}")
 	public ResponseEntity<UserEntity> getUserById(@PathVariable String userId){
+		
 		var user = userService.getUserById(userId);
+		
 		if(user.isEmpty()) {
 			return ResponseEntity.notFound().build();
 		}
 		return ResponseEntity.ok(user.get());
+	}
+	
+	@GetMapping
+	public ResponseEntity<List<UserEntity>> findAllUsers(){
+		
+		var users = userService.getUserList();
+		return ResponseEntity.ok(users);
 	}
 	
 	

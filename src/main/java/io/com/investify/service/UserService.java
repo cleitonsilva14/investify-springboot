@@ -1,6 +1,7 @@
 package io.com.investify.service;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -37,5 +38,11 @@ public class UserService {
 	public Optional<UserEntity> getUserById(String userId) {
 		return userRepository.findById(UUID.fromString(userId));
 	}
+	
+	public List<UserEntity> getUserList(){
+		return userRepository.findAll();
+	}
+	
+	
 	
 }
